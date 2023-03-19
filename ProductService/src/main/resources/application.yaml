@@ -8,6 +8,7 @@ spring:
     url: jdbc:mysql://localhost:3307/productdb
     username: root
     password: password
+
 #    driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
 #    database-platform: org.hibernate.dialect.MySQL57InnoDBDialect
