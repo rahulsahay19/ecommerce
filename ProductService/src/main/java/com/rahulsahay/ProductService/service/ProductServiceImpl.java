@@ -10,6 +10,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.springframework.beans.BeanUtils.*;
 
 @Service
@@ -55,5 +58,20 @@ public class ProductServiceImpl implements ProductService {
         product.setQuantity(product.getQuantity() - quantity);
         productRepository.save(product);
         log.info("Product quantity updated successfully!!!");
+    }
+
+    @Override
+    public List<ProductResponse> getAllProducts() {
+        log.info("Getting all the Products!!!");
+        List<Product> productList = productRepository.findAll();
+        List<ProductResponse> products = productList
+                .stream()
+                .map(productEntity->{
+                    ProductResponse product = new ProductResponse();
+                    //Copying props from entity to response
+                    BeanUtils.copyProperties(productEntity, product);
+                    return product;
+                }).collect(Collectors.toList());
+        return products;
     }
 }

@@ -18,6 +18,10 @@ spring:
   config:
     import: configserver:http://localhost:9296
 
+management:
+  tracing:
+    sampling:
+      probability: 1.0
 #eureka:
 #  instance:
 #    prefer-ip-address: true

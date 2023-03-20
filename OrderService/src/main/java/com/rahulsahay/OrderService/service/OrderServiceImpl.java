@@ -1,7 +1,9 @@
 package com.rahulsahay.OrderService.service;
 
 import com.rahulsahay.OrderService.entity.Order;
+import com.rahulsahay.OrderService.external.client.PaymentService;
 import com.rahulsahay.OrderService.external.client.ProductService;
+import com.rahulsahay.OrderService.external.request.PaymentRequest;
 import com.rahulsahay.OrderService.model.OrderRequest;
 import com.rahulsahay.OrderService.repository.OrderRepository;
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +20,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private PaymentService paymentService;
     @Override
     public long placeOrder(OrderRequest orderRequest) {
         //Create Order Entity
@@ -35,6 +40,24 @@ public class OrderServiceImpl implements OrderService {
                 .quantity(orderRequest.getQuantity())
                 .build();
         order = orderRepository.save(order);
+        log.info("Calling Payment service to complete the order!!!");
+        PaymentRequest paymentRequest = PaymentRequest.builder()
+                .orderId(order.getId())
+                .paymentMode(orderRequest.getPaymentMode())
+                .amount(orderRequest.getTotalAmount())
+                .build();
+        String orderStatus = null;
+        try{
+            paymentService.doPayment(paymentRequest);
+            log.info("Payment done successfully. Changing the orderStatus = PLACED");
+            orderStatus = "PLACED";
+        }catch (Exception e){
+            log.info("Payment FAILED. Changing the orderStatus = FAILED");
+            orderStatus = "PAYMENT_FAILED";
+        }
+        order.setOrderStatus(orderStatus);
+        //Now this time with OrderStatus
+        orderRepository.save(order);
         log.info("Order placed successfully with Order Id : {}", order.getId());
         return order.getId();
     }
