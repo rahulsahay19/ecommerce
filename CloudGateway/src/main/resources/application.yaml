@@ -26,3 +26,11 @@ spring:
           uri: lb://PRODUCT-SERVICE
           predicates:
             - Path=/product/**
+
+okta:
+  oauth2:
+    issuer: https://dev-32127018.okta.com/oauth2/default
+    audience: api://default
+    client-id: 0oa8s8w396iMb0eMd5d7
+    client-secret: xzHmYQyPYzyUkUldG2WR2FdrGHD29xxJUP2cPclq
+    scopes: openid, email, profile, offline_access
