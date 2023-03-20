@@ -1,6 +1,7 @@
 package com.rahulsahay.OrderService.controller;
 
 import com.rahulsahay.OrderService.model.OrderRequest;
+import com.rahulsahay.OrderService.model.OrderResponse;
 import com.rahulsahay.OrderService.service.OrderService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,4 +23,9 @@ public class OrderController {
         return new ResponseEntity<>(orderId, HttpStatus.OK);
     }
 
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderResponse> getOrderDetails(@PathVariable long orderId){
+        OrderResponse orderResponse = orderService.getOrderDetails(orderId);
+        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+    }
 }

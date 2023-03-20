@@ -69,7 +69,13 @@
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-tracing-bridge-brave</artifactId>
 		</dependency>
-<!--		<dependency>-->
+		<dependency>
+			<groupId>com.rahulsahay</groupId>
+			<artifactId>ProductService</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<!--		<dependency>-->
 <!--			<groupId>org.springframework.cloud</groupId>-->
 <!--			<artifactId>spring-cloud-sleuth-zipkin</artifactId>-->
 <!--			<version>3.0.4</version>-->
