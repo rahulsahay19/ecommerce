@@ -86,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
                 .productName(productResponse.getProductName())
                 .productId(productResponse.getProductId())
                 .quantity(productResponse.getQuantity())
-                .price(productResponse.getPrice())  
+                .price(productResponse.getPrice())
                 .build();
         OrderResponse.PaymentDetails paymentDetails = OrderResponse.PaymentDetails
                 .builder()
