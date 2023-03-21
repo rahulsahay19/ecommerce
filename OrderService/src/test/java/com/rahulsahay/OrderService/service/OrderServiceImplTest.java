@@ -11,10 +11,10 @@ import com.rahulsahay.OrderService.model.OrderResponse;
 import com.rahulsahay.OrderService.model.PaymentMode;
 import com.rahulsahay.OrderService.repository.OrderRepository;
 import com.rahulsahay.ProductService.model.ProductResponse;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,8 @@ import java.time.Instant;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -85,6 +86,22 @@ public class OrderServiceImplTest {
         when(orderRepository.save(any(Order.class))).thenReturn(order);
         when(productService.reduceQuantity(anyLong(), anyLong())).thenReturn(new ResponseEntity<Void>(HttpStatus.OK));
         when(paymentService.doPayment(any(PaymentRequest.class))).thenReturn(new ResponseEntity<Long>(HttpStatus.OK));
+        long orderId = orderService.placeOrder(orderRequest);
+        verify(orderRepository, times(2)).save(any());
+        verify(productService, times(1)).reduceQuantity(anyLong(), anyLong());
+        verify(paymentService, times(1)).doPayment(any(PaymentRequest.class));
+        assertEquals(order.getId(), orderId);
+    }
+
+    @DisplayName("Place Order - Payment Fail Scenario")
+    @Test
+    void test_When_Placed_Order_Payment_Fails(){
+        Order order = getMockOrder();
+        OrderRequest orderRequest = getMockOrderRequest();
+
+        when(orderRepository.save(any(Order.class))).thenReturn(order);
+        when(productService.reduceQuantity(anyLong(), anyLong())).thenReturn(new ResponseEntity<Void>(HttpStatus.OK));
+        when(paymentService.doPayment(any(PaymentRequest.class))).thenThrow(new RuntimeException());
         long orderId = orderService.placeOrder(orderRequest);
         verify(orderRepository, times(2)).save(any());
         verify(productService, times(1)).reduceQuantity(anyLong(), anyLong());
