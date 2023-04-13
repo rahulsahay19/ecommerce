@@ -1,0 +1,28 @@
+version: '3'
+services:
+  serviceregistry:
+    image: 'rahulsahay19/serviceregistry:v1'
+    container_name: serviceregistry
+    ports:
+      - '8761:8761'
+  configserver:
+    image: 'rahulsahay19/configserver:v1'
+    container_name: configserver
+    ports:
+      - '9296:9296'
+    environment:
+      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka    
+    depends_on:
+      - serviceregistry
+  cloudgateway:
+    image: 'rahulsahay19/cloudgateway:v1'
+    container_name: cloudgateway
+    ports:
+      - '9090:9090'
+    environment:
+      - EUREKA_SERVER_ADDRESS=http://serviceregistry:8761/eureka
+      - CONFIG_SERVER_URL=configserver
+    depends_on:
+     - configserver
+     - serviceregistry
+        

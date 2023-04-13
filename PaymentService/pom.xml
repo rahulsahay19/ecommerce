@@ -14,7 +14,7 @@
 	<name>PaymentService</name>
 	<description>Payment Service</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>11</java.version>
 		<spring-cloud.version>2022.0.1</spring-cloud.version>
 	</properties>
 	<dependencies>
@@ -77,14 +77,20 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${project.parent.version}</version>
 				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<image>
+						<name>${project.groupId}/${project.artifactId}:${project.version}</name>
+					</image>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>build-image</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

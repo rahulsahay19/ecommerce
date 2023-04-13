@@ -9,12 +9,12 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.rahulsahay</groupId>
-	<artifactId>ProductService</artifactId>
+	<artifactId>product-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ProductService</name>
+	<name>product-service</name>
 	<description>Product Service</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>18</java.version>
 		<spring-cloud.version>2022.0.1</spring-cloud.version>
 	</properties>
 	<dependencies>
@@ -108,14 +108,20 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${project.parent.version}</version>
 				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<image>
+						<name>${project.groupId}/product.service:${project.version}</name>
+					</image>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>build-image</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

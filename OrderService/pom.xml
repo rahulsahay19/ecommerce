@@ -82,12 +82,14 @@
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-tracing-bridge-brave</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.rahulsahay</groupId>
-			<artifactId>ProductService</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>com.rahulsahay</groupId>-->
+<!--			<artifactId>ProductService</artifactId>-->
+<!--			<version>0.0.1-SNAPSHOT</version>-->
+<!--			<scope>compile</scope>-->
+<!--		</dependency>-->
+
+
 		<dependency>
 			<groupId>com.github.tomakehurst</groupId>
 			<artifactId>wiremock-jre8</artifactId>
@@ -105,6 +107,24 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.rahulsahay</groupId>
+			<artifactId>ProductService</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.rahulsahay</groupId>
+			<artifactId>product-service</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<!--		<dependency>-->
+<!--			<groupId>com.rahulsahay</groupId>-->
+<!--			<artifactId>product.service</artifactId>-->
+<!--			<version>0.0.1-SNAPSHOT</version>-->
+<!--			<scope>compile</scope>-->
+<!--		</dependency>-->
+
 		<!--		<dependency>-->
 <!--			<groupId>org.springframework.cloud</groupId>-->
 <!--			<artifactId>spring-cloud-sleuth-zipkin</artifactId>-->
@@ -133,14 +153,20 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${project.parent.version}</version>
 				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+					<image>
+						<name>${project.groupId}/order-service:${project.version}</name>
+					</image>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>build-image</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
